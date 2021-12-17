@@ -4,9 +4,7 @@ using AStarNavigator.Providers;
 
 if (args.Length < 1) throw new InvalidOperationException("need single argument containing file path to input");
 
-await using var input = new FileStream(args[0], FileMode.Open);
-var reader = new StreamReader(input);
-byte[][] values = (await reader.ReadToEndAsync()).Split('\n')
+var values = (await File.ReadAllTextAsync(args[0])).Split('\n')
     .Select(s => s.ToCharArray()
         .Select(c => byte.Parse(c.ToString()))
         .ToArray())
@@ -25,8 +23,6 @@ var sum = AStar(new Point {X = 0, Y = 0}, new Point
         Y = values[0].Length
     })
     .Sum(p => values[p.X][p.Y]);
-
-
 
 struct Point : IEquatable<Point>
 {
